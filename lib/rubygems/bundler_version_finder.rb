@@ -49,7 +49,8 @@ To install the missing version, run `gem install bundler:#{vr.first}`
 
   def self.bundle_update_bundler_version
     return unless File.basename($0) == "bundle".freeze
-    return unless "update".start_with?(ARGV.first || " ")
+    return if ARGV.first.nil?
+    return if %w[update lock].none? { |c| c.start_with?(ARGV.first) }
     bundler_version = nil
     update_index = nil
     ARGV.each_with_index do |a, i|
