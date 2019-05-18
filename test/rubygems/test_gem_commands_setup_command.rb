@@ -271,6 +271,30 @@ class TestGemCommandsSetupCommand < Gem::TestCase
     end
   end
 
+  def test_install_default_bundler_gem_with_destdir_flag
+    skip "destdir flag is broken due to drive letter issues" if win_platform?
+
+    @cmd.extend FileUtils
+
+    bin_dir = File.join(@gemhome, 'bin')
+
+    bindir(bin_dir) do
+      destdir = File.join(@tempdir, 'foo')
+
+      @cmd.options[:destdir] = destdir
+
+      @cmd.install_default_bundler_gem bin_dir
+
+      bundler_spec = Gem::Specification.load("bundler/bundler.gemspec")
+      default_spec_path = File.join(Gem.default_specifications_dir, "#{bundler_spec.full_name}.gemspec")
+      spec = Gem::Specification.load(default_spec_path)
+
+      spec.executables.each do |e|
+        assert_path_exists File.join(destdir, spec.bin_dir, e)
+      end
+    end
+  end
+
   def test_remove_old_lib_files
     lib                   = File.join @install_dir, 'lib'
     lib_rubygems          = File.join lib, 'rubygems'
