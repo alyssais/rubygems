@@ -220,7 +220,7 @@ class TestGemCommandsSetupCommand < Gem::TestCase
         assert_path_exists File.join(bin_dir, "#{e}.bat")
       end
 
-      assert_path_exists File.join bin_dir, Gem.default_exec_format % e
+      assert_path_exists File.join(bin_dir, Gem.default_exec_format % e)
     end
 
     default_dir = Gem.default_specifications_dir
@@ -266,7 +266,7 @@ class TestGemCommandsSetupCommand < Gem::TestCase
           assert_path_exists File.join(bin_dir, "#{e}.bat")
         end
 
-        assert_path_exists File.join bin_dir, Gem.default_exec_format % e
+        assert_path_exists File.join(bin_dir, Gem.default_exec_format % e)
       end
     end
   end
